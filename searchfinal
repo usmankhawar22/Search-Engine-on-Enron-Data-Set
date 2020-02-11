@@ -1,0 +1,76 @@
+
+import mysql.connector
+import operator
+
+
+conn = mysql.connector.connect(user="root", password = "pakistan123", host = "localhost")
+cursor = conn.cursor()
+
+cursor.execute("use Mission_Enron1")
+
+
+searcher=dict()
+count=dict()
+def getFromDB(word):
+    cursor.execute("""select Doc_id_B, Word_Count_ from rev_index_body where Word_B like "%s";""" % (word))
+    retrived=cursor.fetchall()
+
+    for i in retrived:
+        if i[0] in searcher.keys():
+            searcher[i[0]] +=i[1]
+            count[i[0]]+=1
+        else:
+            searcher[i[0]] =i[1]
+            count[i[0]]=1
+
+
+    cursor.execute("""select Doc_id, Word_Count from rev_index_subject  where Word like "%s";""" % (word))
+    retrived=cursor.fetchall()
+
+    for i in retrived:
+        if i[0] in searcher.keys():
+            searcher[i[0]] +=i[1]
+            count[i[0]]+=1
+        else:
+            searcher[i[0]] =i[1]
+            count[i[0]]=1
+            
+
+
+query = "you"
+
+for word in query.split():
+    getFromDB(word)
+
+
+    
+
+
+
+    
+    
+
+def searchResults():
+    dictionaryKEY=[]
+    for i in searcher.items():
+    ##print(i[0], i[1], count[i[0]])
+        searcher[i[0]] = i[1] * count[i[0]]
+
+    for i in sorted(searcher.items(), key=operator.itemgetter(1),reverse=True):
+        print(i[0])
+        dictionaryKEY.append(i[0])
+        
+        
+
+    searcher.clear()
+    count.clear()                                #for next search again emptying dictionary
+    return dictionaryKEY[0:10]
+
+print(searchResults())
+
+
+
+    
+
+
+

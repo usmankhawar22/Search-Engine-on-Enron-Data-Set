@@ -1,0 +1,137 @@
+#File name: Startup1Screen.py
+#kivy 1.9.1
+
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+ScreenManagement:
+	transition: FadeTransition()
+	HomePage:
+	SearchPage:
+	
+<HomePage>:
+	name: "HomePage"
+	Image:
+		canvas:
+			Rectangle:
+				source:"BG-01.png"
+				size: self.size
+				pos: self.pos
+
+
+	FloatLayout:
+
+	Button:
+		size_hint_x: None
+		size_hint_y: None
+		height : '100dp'
+		width: '100dp'
+		pos_hint: {"center_x":0.6,"center_y":0.5}
+		background_normal: "search-01.png"
+		background_down: "Searchdown-01.png"
+		on_release: app.search(entry.text)
+		on_release: app.root.current = "SearchPage"
+
+	TextInput:
+		id: entry
+		font_size: 35
+		text: "	Search"
+        size_hint_x: 0.3
+        size_hint_y: None
+        height : '60dp'
+        pos_hint: {"center_x":0.4,"center_y":0.5}
+        multiline: False
+        background_normal : "search-02.png"
+        background_active : "search-02.png"
+        border : 0,0,0,0
+        
+
+
+<SearchPage>:
+	name: "SearchPage"
+	Image:
+		canvas:
+			Rectangle:
+				source:"BG2.png"
+				size: self.size
+				pos: self.pos
+
+	FloatLayout:
+
+		Label:
+			id: label1
+			text: "none out of 10"
+			pos_hint: {"center_x":0.5,"center_y":.95}
+
+		Button:
+			size_hint_x: None
+			size_hint_y: None
+			height : '50dp'
+			width: '50dp'
+			pos_hint: {"center_x":0.025,"center_y":.95}
+			background_normal: "Back-01.png"
+			border: 0,0,0,0
+			on_press: Email.text = app.back_file()
+			on_release: label1.text = app.get_e_index()
+
+		Button:
+			size_hint_x: None
+			size_hint_y: None
+			height : '50dp'
+			width: '50dp'
+			pos_hint: {"center_x":0.08,"center_y":.95}
+			background_normal: "NExt-01-01.png"
+			border: 0,0,0,0
+			on_press: Email.text = app.next_file()
+			on_release: label1.text = app.get_e_index()
+			
+		Button:
+			size_hint_x: None
+			size_hint_y: None
+			height : '90dp'
+			width: '90dp'
+			pos_hint: {"center_x":0.965,"center_y":0.95}
+			background_normal: "search-01.png"
+			background_down: "Searchdown-01.png"
+			on_release: app.search(entry1.text)
+			on_release: app.root.current = "SearchPage"
+
+		TextInput:
+			id: entry1
+			font_size: 23
+			text: "	Search"
+	        size_hint_x: 0.3
+	        size_hint_y: None
+	        height : '50dp'
+	        pos_hint: {"center_x":0.75,"center_y":0.95}
+	        multiline: False
+	        background_normal : "search-02.png"
+	        background_active : "search-02.png"
+	        border : 0,0,0,0
+
+	    ScrollView:
+	    	id: scrlv
+	    	pos_hint:{"center_x": 0.5 , "center_y":0.4}
+	  
+	    	GridLayout:
+	            id: output
+	            cols: 1
+	            size_hint_y: None
+	            height: self.minimum_height
+	            scroll_type: ['bars']
+	            bar_pos_y: 'left'
+				bar_width: '20dp'
+				bar_margin : 20
+
+		    	TextInput:
+		    		multiline: True
+			    	do_scroll_y: True
+			    	id: Email
+					text_size: self.width, None
+					size_hint: 1, None
+	        		height: max( (len(self._lines)+1) * self.line_height, scrlv.height)
+					halign: 'left'
+					valign: 'top'
+					text: "press next!"
+					
+
+	    		
